@@ -4,31 +4,35 @@ import java.lang.*;
 
 public class TestFSMIO {
 
-	public static void main(String argv[]){
+    public static void main(String argv[]){
+	State s1, s2, s3, s4;
+	s1 = new State("s1");
+	s2 = new State("s2");
+	s3 = new State("s3");
+	s4 = new State("s4");
+	
+	ArrayList<State> states = new ArrayList<State>();
+	states.add(s1);
+	states.add(s2);
+	states.add(s3);
+	states.add(s4);
+	
 
-	    String stateNames[] = new String[3];
-	    char inputs[] = new char[2];
-	    stateNames[0] = "s1";
-	    stateNames[1] = "s2";
-	    stateNames[2] = "s3";
-	    inputs[0] = 'a';
-	    inputs[1] = 'b';
+	FSMIO<String, Integer> fsm = new FSMIO<String, Integer>(states, s1);
 
-	    SimpleFSMIO sfsm = new SimpleFSMIO(stateNames, "s1", inputs);
-	    sfsm.addTransition("s1", 'a', "s1", 0);
-	    sfsm.addTransition("s1", 'b', "s3", 0);
-	    sfsm.addTransition("s2", 'a', "s1", 0);
-	    sfsm.addTransition("s2", 'b', "s2", 1);
-	    sfsm.addTransition ("s3", 'a', "s2", 1);
-	    sfsm.addTransition("s3", 'b', "s3", 1);
+	// remarquez que l'ordre des arguments n'est pas le même que la V1. Pourquoi ?
+	fsm.addTransition(s1, "a", 0, s2);
+	fsm.addTransition(s1, "b", 0, s3);
+	fsm.addTransition(s2, "a", 0, s3);
+	fsm.addTransition(s2, "b", 1, s2);
+	fsm.addTransition(s3, "a", 0, s4);
+	fsm.addTransition(s3, "b", 0, s3);
+	fsm.addTransition(s4, "a", 1, s2);
+	fsm.addTransition(s4, "b", 1, s3);
 
-	    // TODO (V1.Q2) test your functions...
-	    // Uncomment to test your first methods.
-	    //System.out.println(sfsm.getNextState("s1", 'a'));
-	    //System.out.println(sfsm.getOutput("s3", 'b')); 
+	System.out.println(fsm);
 
-	    sfsm.reset();
-	    // TODO (V1.Q3) : play string "abbaabbaaa"!
-	    
-	}
+	
+	// TODO : Play with this automata, and add another one.
+    }
 }
